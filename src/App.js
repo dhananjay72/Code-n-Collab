@@ -1,8 +1,9 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Home from "./pages/Home";
 
-const Home = lazy(() => import("./Screens/Home"));
-const Room = lazy(() => import("./Screens/Room"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const RoomPage = lazy(() => import("./pages/RoomPage"));
 
 export default function App() {
   return (
@@ -10,7 +11,7 @@ export default function App() {
       <BrowserRouter>
         <Switch>
           <Route component={Home} exact path="/" />
-          <Route component={Room} exact path="/room/:roomName" />
+          <Route component={RoomPage} exact path="/room/:roomName" />
         </Switch>
       </BrowserRouter>
     </Suspense>

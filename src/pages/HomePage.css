@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Muli:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+body {
+  background: #282b34;
+}
+
+.homepage {
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  color: white;
+  font-family: "Muli", sans-serif;
+
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #282b34;
+}
+
+.homepage {
+  width: 500px;
+  height: 500px;
+  padding: 2rem;
+  background-color: #2d343e;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+}
+.homepage input {
+  height: 50px;
+  width: 80%;
+  background-color: #404450;
+  border: none;
+  padding-left: 1rem;
+  border-radius: 5px;
+}
+.homepage input:focus {
+  outline: none;
+}
+.homepage button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  width: 100px;
+  border: none;
+  background-color: #ffac41;
+  border-radius: 5px;
+  color: black;
+}
+.homepage button:hover {
+  cursor: pointer;
+}
+.heading {
+  font-size: 30px;
+  font-weight: bold;
+}
+.para {
+  text-align: center;
+}
+
+.outer input {
+  height: 50px;
+  width: 80%;
+  background-color: #404450;
+  border: none;
+  color: white;
+  padding-left: 1rem;
+  font-size: medium;
+  border-radius: 5px;
+}
+
+.outer input:focus {
+  border: 1px solid blue;
+  box-shadow: 0 0 10px #719ece;
+}
