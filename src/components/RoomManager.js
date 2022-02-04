@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
+import axios from "axios";
 import { snippets } from "../constants/snippets";
 import TextEditor from "../components/TextEditor";
 import Whiteboard from "../components/Whiteboard";
-//import ParticipantList from "../components/ParticipantList";
+import ParticipantList from "../components/ParticipantList";
 import apiURL from "../constants/apiURL";
 
 export default function RoomManager(props) {
@@ -12,11 +13,14 @@ export default function RoomManager(props) {
   const participantListRef = useRef();
   const [cursorList, setCursorList] = useState([]);
   const [nameList, setNameList] = useState([]);
-  const [language, setLanguage] = useState("javascript");
+  const [language, setLanguage] = useState("cpp");
   const [text, setText] = useState(snippets["javascript"]);
   const [drawing, setDrawing] = useState([]);
   const [output, setOutPut] = useState([]);
+  const [isCompiling, setIsCompiling] = useState(false);
+
   const [input, setInput] = useState([]);
+  const [tt, seTT] = useState("");
 
   useEffect(() => {
     socketRef.current = io(
@@ -71,6 +75,10 @@ export default function RoomManager(props) {
     socketRef.current.emit("text change", newText);
   }
 
+  function disPlayOutput(answer) {
+    setOutPut(answer);
+  }
+
   function handleLocalLanguageChange(newLang) {
     // Update our language locally
     setLanguage(newLang);
@@ -80,6 +88,10 @@ export default function RoomManager(props) {
 
     // Emit language change to everyone else
     socketRef.current.emit("language change", newLang);
+  }
+
+  function ipChange(ip) {
+    setInput(ip);
   }
 
   function handleLocalDrawingChange(newDrawing) {
@@ -129,23 +141,28 @@ export default function RoomManager(props) {
     setNameList(newNameList);
   }
 
-  async function getOutput() {
-    console.log(text);
-    console.log(language);
-    var paiza_io = require("paiza-io");
+  function getOutput() {
+    setIsCompiling(true);
 
-    if (language === "python" || language === "javascript") {
-      paiza_io("python", text, input, function (error, result) {
-        setOutPut(result.stdout);
-        console.log(result.stdout);
-      });
-    } else {
-      paiza_io(language, [text].join("\n"), input, function (error, result) {
-        if (error) throw error;
-        setOutPut(result.stdout);
-        console.log(result.stdout);
-      });
-    }
+    axios
+      .post(apiURL + "/code/run", {
+        code: text,
+        input: input,
+        id: "fsf",
+        lang: language,
+      })
+      .then((responce) => {
+        seTT(responce.data);
+        setIsCompiling(false);
+      })
+      .then(() => {});
+
+    // scrolling :
+    window.scroll({
+      top: document.body.offsetHeight,
+      left: 0,
+      behavior: "smooth",
+    });
   }
 
   return (
@@ -153,7 +170,9 @@ export default function RoomManager(props) {
       <TextEditor
         text={text}
         getOutput={getOutput}
-        output={output}
+        output={tt}
+        ipChange={ipChange}
+        isCompiling={isCompiling}
         setText={handleLocalTextChange}
         language={language}
         setLanguage={handleLocalLanguageChange}
@@ -162,9 +181,12 @@ export default function RoomManager(props) {
         setCursor={handleLocalCursorChange}
         cursorList={cursorList}
       />
+
       {/* <button onClick={getOutput}>compile</button> */}
+
       <Whiteboard drawing={drawing} setDrawing={handleLocalDrawingChange} />
-      {/* <ParticipantList nameList={nameList} /> */}
+
+      <ParticipantList nameList={nameList} />
     </div>
   );
 }

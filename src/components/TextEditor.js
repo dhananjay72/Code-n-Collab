@@ -12,7 +12,8 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import { supportedLanguages, getLanguageMode } from "../constants/editor";
 import apiURL from "../constants/apiURL";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
+import "../css/Io.css";
 
 export default function TextEditor(props) {
   const {
@@ -21,6 +22,8 @@ export default function TextEditor(props) {
     getOutput,
     language,
     output,
+    ipChange,
+    isCompiling,
     setLanguage,
     displayName,
     roomName,
@@ -34,6 +37,9 @@ export default function TextEditor(props) {
 
   function compile() {
     getOutput();
+
+    console.log(Output);
+
     setOutput(output);
   }
 
@@ -63,7 +69,13 @@ export default function TextEditor(props) {
   }
 
   function generateLink() {
-    alert(`   ${window.location.href}   `);
+    alert(`Invitation link copied to clipboard`);
+    const el = document.createElement("input");
+    el.value = window.location.href;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
   }
 
   function handleCursorChange(editor, data) {
@@ -92,7 +104,23 @@ export default function TextEditor(props) {
       <div className="editor-top">
         Room : {roomName}
         <Button onClick={generateLink}> Invite </Button>
-        <Button onClick={compile}>Compile</Button>
+        {isCompiling && (
+          <Button variant="primary" disabled onClick={compile}>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            <span className="visually-hidden"> Compiling...</span>
+          </Button>
+        )}
+        {!isCompiling && (
+          <Button variant="primary" onClick={compile}>
+            Compile
+          </Button>
+        )}
         {/* Display Name: {displayName} */}
         <DropdownButton title={language}>
           {supportedLanguages.map((lang) => (
@@ -124,17 +152,24 @@ export default function TextEditor(props) {
       />
       {/* Input , output */}
       <div className="form-group">
-        <label htmlFor="exampleFormControlTextarea1">Input</label>
+        <label htmlFor="exampleFormControlTextarea1" className="labels">
+          Input
+        </label>
         <textarea
+          onChange={(e) => {
+            ipChange(e.target.value);
+          }}
           className="form-control"
           id="exampleFormControlTextarea1"
           rows="5"
         />
       </div>
       <div className="form-group">
-        <label htmlFor="exampleFormControlTextarea1"> </label>
+        <label htmlFor="exampleFormControlTextarea1" className="labels">
+          Output
+        </label>
         <textarea
-          value={Output}
+          value={output}
           className="form-control"
           id="exampleFormControlTextarea1"
           rows="5"

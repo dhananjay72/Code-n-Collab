@@ -25,7 +25,7 @@ export default function HomePage() {
       console.log("Empty value", roomName, displayName);
       return;
     }
-
+ 
     axios
       .post(`${apiURL}/new`, { roomName })
       .then((response) => {

@@ -7,31 +7,13 @@ const http = require("http");
 const cors = require("cors");
 const server = http.createServer(app);
 const io = socketio(server);
+const codeRunRouter = require("./codeRun");
+
 //const port = process.env.NODE_ENV === "development" ? 5000 : 8080;
-//const port = 5000;
+// const port = 5000;
 const port = process.env.PORT;
 
 const proxy = require("http-proxy-middleware");
-
-// module.exports = function (app) {
-//   // add other server routes to path array
-//   app.use(proxy(["/api"], { target: "http://localhost:5000" }));
-// };
-
-// cors :
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
-// cors
 
 let rooms = {
   defaultRoom: {
@@ -46,6 +28,7 @@ let rooms = {
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use("/code", codeRunRouter);
 
 // addes
 app.use(function (req, res, next) {

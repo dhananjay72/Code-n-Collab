@@ -5,11 +5,20 @@ router.post("/run", (req, res) => {
   let input = req.body.input;
   let lang = req.body.lang;
 
+  console.log(lang);
+
   // compilation using paiza.io :
 
   var paiza_io = require("paiza-io");
 
-  if (lang === "python" || lang === "javascript") {
+  if (lang === "javascript") {
+    paiza_io("javascript", [code].join("\n"), "", function (error, result) {
+      // if (error) throw error;
+      console.log("c++ result:");
+      console.log(result.stdout); //=> Hello, C++ World!
+      res.send(result.stdout);
+    });
+  } else if (lang === "python") {
     paiza_io("python", code, input, function (error, result) {
       console.log(result);
       if (error) {
