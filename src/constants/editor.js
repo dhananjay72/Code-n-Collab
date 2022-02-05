@@ -1,4 +1,4 @@
-export const supportedLanguages = ["python", "java", "c", "cpp"];
+export const supportedLanguages = ["javascript", "python", "java", "c", "cpp"];
 
 export function getLanguageMode(lang) {
   switch (lang) {

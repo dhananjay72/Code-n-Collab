@@ -13,7 +13,7 @@ export default function RoomManager(props) {
   const participantListRef = useRef();
   const [cursorList, setCursorList] = useState([]);
   const [nameList, setNameList] = useState([]);
-  const [language, setLanguage] = useState("cpp");
+  const [language, setLanguage] = useState("javascript");
   const [text, setText] = useState(snippets["javascript"]);
   const [drawing, setDrawing] = useState([]);
   const [output, setOutPut] = useState([]);

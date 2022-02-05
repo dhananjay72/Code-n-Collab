@@ -15,6 +15,20 @@ import apiURL from "../constants/apiURL";
 import { Button, Spinner } from "react-bootstrap";
 import "../css/Io.css";
 
+// new addons to codemirror :
+import "codemirror/addon/edit/closebrackets";
+import "codemirror/addon/edit/matchbrackets";
+import "codemirror/addon/runmode/colorize";
+import "codemirror/addon/hint/show-hint";
+import "codemirror/addon/hint/anyword-hint";
+import "codemirror/addon/fold/foldcode";
+import "codemirror/addon/fold/foldgutter";
+import "codemirror/addon/fold/brace-fold";
+import "codemirror/addon/fold/comment-fold";
+
+
+
+
 export default function TextEditor(props) {
   const {
     text,
@@ -147,6 +161,16 @@ export default function TextEditor(props) {
           lint: true,
           mode: getLanguageMode(language),
           theme: "dracula",
+	  autoCloseTags: true,
+          matchBrackets: true,
+          autoCloseBrackets: true,
+          smartIndent: true,
+          colorize: true,
+          showHint: true,
+          anyword: true,
+          foldGutter: true,
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+          
           // theme: "material",
         }}
       />
