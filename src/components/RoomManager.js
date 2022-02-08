@@ -154,15 +154,15 @@ export default function RoomManager(props) {
       .then((responce) => {
         seTT(responce.data);
         setIsCompiling(false);
+        window.scroll({
+          top: document.body.offsetHeight,
+          left: 0,
+          behavior: "smooth",
+        });
       })
       .then(() => {});
 
     // scrolling :
-    window.scroll({
-      top: document.body.offsetHeight,
-      left: 0,
-      behavior: "smooth",
-    });
   }
 
   return (
